@@ -1,1 +1,4 @@
 language: java
+jdk:
+ - orcalejdk8
+ sudo: true
