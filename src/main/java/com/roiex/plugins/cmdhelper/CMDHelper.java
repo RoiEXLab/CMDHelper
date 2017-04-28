@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -18,16 +17,16 @@ public class CMDHelper extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		CommandArgument.registerDefaults();
-		PluginCommand testCommand = getCommand("testCommand");
-		testCommand.setExecutor(new CommandExecutor() {
-
-			@Override
-			public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-				sender.sendMessage("Hi");
-				return true;
-			}
-		});
-		registerCommandSyntax(testCommand, "/testCommand [<x> <y> <z>]|[<block> <material>]");
+		//		PluginCommand testCommand = getCommand("testCommand");
+		//		testCommand.setExecutor(new CommandExecutor() {
+		//
+		//			@Override
+		//			public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		//				sender.sendMessage("Hi");
+		//				return true;
+		//			}
+		//		});
+		//		registerCommandSyntax(testCommand, "[<x> <y> <z> <block>]|[<block> <material>]|[<block> <x> <y>] [<x>]", new PermissionMask("<block> <material> <x>", "permission-coolness"));
 	}
 
 	public void registerCommandSyntax(PluginCommand command, String structure, PermissionMask... permissionMasks) {
@@ -46,7 +45,7 @@ public class CMDHelper extends JavaPlugin {
 					if (command.getPermission() != null && !sender.hasPermission(command.getPermission())) {
 						break tryLabel;
 					}
-					Arrays.stream(permissionMasks).filter(m -> StructureParser.matches(m, args));
+					Arrays.stream(permissionMasks).filter(m -> StructureParser.matches(m, args, sender));
 					List<CommandArgument> cmdArgs = StructureParser.getCommandArguments(pattern, args, sender);
 					for (PermissionMask mask : permissionMasks) {
 						if (!sender.hasPermission(mask.getPermission())) {
