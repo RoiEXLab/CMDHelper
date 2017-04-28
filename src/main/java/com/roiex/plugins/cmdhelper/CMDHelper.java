@@ -17,16 +17,15 @@ public class CMDHelper extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		CommandArgument.registerDefaults();
-		//		PluginCommand testCommand = getCommand("testCommand");
-		//		testCommand.setExecutor(new CommandExecutor() {
-		//
-		//			@Override
-		//			public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		//				sender.sendMessage("Hi");
-		//				return true;
-		//			}
-		//		});
-		//		registerCommandSyntax(testCommand, "[<x> <y> <z> <block>]|[<block> <material>]|[<block> <x> <y>] [<x>]", new PermissionMask("<block> <material> <x>", "permission-coolness"));
+//		PluginCommand testCommand = getCommand("testCommand");
+//		testCommand.setExecutor(new CommandRouter().addRoute("<x> <y> <z> <block>", (s, c, a, args) -> {
+//			System.out.println("Setblock");
+//			return true;
+//		}).addRoute("<block> <material>", (s, c, a, args) -> {
+//			System.out.println("Other Stuff");
+//			return true;
+//		}));
+//		registerCommandSyntax(testCommand, "[<x> <y> <z> <block>]|[<block> <material>]|[<block> <x> <y>] [<x>]", new PermissionMask("<block> <material> <x>", "permission-coolness"));
 	}
 
 	public void registerCommandSyntax(PluginCommand command, String structure, PermissionMask... permissionMasks) {

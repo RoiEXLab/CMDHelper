@@ -1,6 +1,6 @@
 name: CMDHelper
 main: com.roiex.plugins.cmdhelper.CMDHelper
-version: 1.0
+version: 2.1.0
 #commands:
 # testCommand:
 #   description: Some Test Command

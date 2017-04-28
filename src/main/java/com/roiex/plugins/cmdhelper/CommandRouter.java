@@ -11,8 +11,9 @@ public class CommandRouter implements CommandExecutor {
 
 	private Map<String, CommandConsumer> routes = new HashMap<>();
 
-	public void addRoute(String pattern, CommandConsumer consumer){
+	public CommandRouter addRoute(String pattern, CommandConsumer consumer){
 		routes.put(pattern, consumer);
+		return this;
 	}
 
 	@Override
