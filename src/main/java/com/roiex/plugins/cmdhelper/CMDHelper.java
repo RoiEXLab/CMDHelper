@@ -33,7 +33,7 @@ public class CMDHelper extends JavaPlugin {
 		//	testCommand.setExecutor(new CommandRouter().addRoute("<x> <y> <z> <block>", (s, c, a, args) -> {
 		//		System.out.println("Setblock");
 		//		return true;
-		//	}).addRoute("<block> <material>", (s, c, a, args) -> {
+		//	}).addRoute("<block> <material> [<x>]", (s, c, a, args) -> {
 		//		System.out.println("Other Stuff");
 		//		return true;
 		//	}));
@@ -41,13 +41,7 @@ public class CMDHelper extends JavaPlugin {
 	}
 
 	public void registerCommandSyntax(PluginCommand command, String structure, PermissionMask... permissionMasks) {
-		structure = structure.trim();
-		String commandPrefix = "/" + command.getName() + ' ';
-		if (structure.startsWith(commandPrefix)) {
-			structure = structure.substring(commandPrefix.length());
-		}
 		StructureParser.validateStaticSyntax(structure);
-		final String pattern = structure;
 		command.setTabCompleter(new TabCompleter() {
 			@Override
 			public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -56,7 +50,7 @@ public class CMDHelper extends JavaPlugin {
 					if (command.getPermission() != null && !sender.hasPermission(command.getPermission())) {
 						break tryLabel;
 					}
-					List<CommandArgument> cmdArgs = StructureParser.getCommandArguments(pattern, args, sender);
+					List<CommandArgument> cmdArgs = StructureParser.getCommandArguments(structure, args, sender);
 					for (PermissionMask mask : permissionMasks) {
 						if (!sender.hasPermission(mask.getPermission())) {
 							List<CommandArgument> prohibitedArgs = StructureParser.getCommandArguments(mask.getMask(), args, sender);

@@ -52,7 +52,8 @@ public class StructureParser {
 					throw new IllegalArgumentException("Indentifier '" + identifier + "' doesn't exist!");
 				}
 			} else if (subArg.startsWith("[") && subArg.endsWith("]")) {
-				return matches(index, subArg.substring(1, subArg.length() - 1) + pattern.substring(nextArg.length()), args, sender);
+				String trimmedArg = subArg.substring(1, subArg.length() - 1);
+				return (findNextArg(trimmedArg).equalsIgnoreCase(trimmedArg) && index >= args.length) || matches(index, trimmedArg + pattern.substring(nextArg.length()), args, sender);
 			} else {
 				return subArg.equalsIgnoreCase(args[index]) && (index + 1 >= args.length || matches(index + 1, pattern.substring(nextArg.length()).trim(), args, sender));
 			}
