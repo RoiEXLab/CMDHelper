@@ -7,6 +7,18 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
+/*tasks.withType(JavaExec) {
+	if (System.getProperty('DEBUG', 'false') == 'true') {
+		jvmArgs '-Xdebug', '-Xrunjdwp:transport=debug_socket,server=y,suspend=y,address=8000'
+	}
+}*/
+
+task copyJarToBin(type: Copy) {
+    from ".\\build\\libs\\CMDHelper.jar"
+    into "E:\\TestServers\\Minecraft\\Spigot 1.11.2\\plugins"
+}
+build.finalizedBy(copyJarToBin)
+
 repositories {    
 	mavenCentral()
 	maven {
@@ -20,5 +32,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:' + project.property("apiversion")
 }
