@@ -35,26 +35,26 @@ public class StructureParser {
 		return chars.length - 1;
 	}
 
-	public static boolean matches(PermissionMask mask, String[] args, CommandSender sender) {
+	public static boolean matches(String mask, String[] args, CommandSender sender) {
 		return matches(0, mask, args, sender);
 	}
 
-	private static boolean matches(int index, PermissionMask mask, String[] args, CommandSender sender) {
-		String nextArg = findNextArg(mask.getMask());
+	private static boolean matches(int index, String pattern, String[] args, CommandSender sender) {
+		String nextArg = findNextArg(pattern);
 		String[] subArgs = nextArg.split("\\|");
 		for (String subArg : subArgs) {
 			if (subArg.startsWith("<") && subArg.endsWith(">")) {
 				String identifier = subArg.substring(1, subArg.length() - 1);
 				CommandArgument current = CommandArgument.args.get(identifier);
 				if (current != null) {
-					return current.matches(args[index], sender) && (index + 1 >= args.length || matches(index + 1, new PermissionMask(mask.getMask().substring(nextArg.length()).trim(), mask.getPermission()), args, sender));
+					return current.matches(args[index], sender) && (index + 1 >= args.length || matches(index + 1, pattern.substring(nextArg.length()).trim(), args, sender));
 				} else {
 					throw new IllegalArgumentException("Indentifier '" + identifier + "' doesn't exist!");
 				}
 			} else if (subArg.startsWith("[") && subArg.endsWith("]")) {
-				return matches(index, new PermissionMask(subArg.substring(1, subArg.length() - 1) + mask.getMask().substring(nextArg.length()), mask.getPermission()), args, sender);
+				return matches(index, subArg.substring(1, subArg.length() - 1) + pattern.substring(nextArg.length()), args, sender);
 			} else {
-				return subArg.equalsIgnoreCase(args[index]) && (index + 1 >= args.length || matches(index + 1, new PermissionMask(mask.getMask().substring(nextArg.length()).trim(), mask.getPermission()), args, sender));
+				return subArg.equalsIgnoreCase(args[index]) && (index + 1 >= args.length || matches(index + 1, pattern.substring(nextArg.length()).trim(), args, sender));
 			}
 		}
 		return false;

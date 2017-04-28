@@ -45,7 +45,7 @@ public class CMDHelper extends JavaPlugin {
 					if (command.getPermission() != null && !sender.hasPermission(command.getPermission())) {
 						break tryLabel;
 					}
-					Arrays.stream(permissionMasks).filter(m -> StructureParser.matches(m, args, sender));
+					Arrays.stream(permissionMasks).filter(m -> StructureParser.matches(m.getMask(), args, sender));
 					List<CommandArgument> cmdArgs = StructureParser.getCommandArguments(pattern, args, sender);
 					for (PermissionMask mask : permissionMasks) {
 						if (!sender.hasPermission(mask.getPermission())) {
