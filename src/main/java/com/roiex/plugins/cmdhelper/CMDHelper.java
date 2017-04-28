@@ -19,14 +19,15 @@ public class CMDHelper extends JavaPlugin {
 	public void onEnable() {
 		CommandArgument.registerDefaults();
 		PluginCommand testCommand = getCommand("testCommand");
-		testCommand.setExecutor(new CommandExecutor(){
+		testCommand.setExecutor(new CommandExecutor() {
 
 			@Override
 			public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 				sender.sendMessage("Hi");
 				return true;
-			}});
-		registerCommandSyntax(testCommand, "/testCommand <x> <y> <z> <item> <material> <string>");
+			}
+		});
+		registerCommandSyntax(testCommand, "/testCommand [<x> <y> <z>]|[<block> <material>]");
 	}
 
 	public void registerCommandSyntax(PluginCommand command, String structure, PermissionMask... permissionMasks) {
@@ -55,7 +56,8 @@ public class CMDHelper extends JavaPlugin {
 					}
 					cmdArgs.stream().map(a -> a.getSuggestions(args[args.length - 1], sender)).forEach(options::addAll);
 				} catch (IllegalArgumentException e) {
-					sender.sendMessage("§4Syntax Error detected while trying to Tab-Complete: Please report this to the plugin author!");
+					sender.sendMessage("§4Syntax Error detected while trying to Tab-Complete: Please report this to the plugin author!\nMessage: " + e.getMessage());
+					e.printStackTrace();
 				}
 				return new ArrayList<>(options);
 			}

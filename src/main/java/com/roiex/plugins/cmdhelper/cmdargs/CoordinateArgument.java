@@ -18,7 +18,7 @@ public abstract class CoordinateArgument implements CommandArgument {
 
 	@Override
 	public List<String> getSuggestions(String arg, CommandSender sender) {
-		if (sender instanceof Player) {
+		if (sender instanceof Player && (arg.trim().isEmpty() || matches(arg, sender))) {
 			Player player = (Player) sender;
 			Block targetBlock = player.getTargetBlock((Set<Material>) null, 5);
 			return Arrays.asList(targetBlock.getType().equals(Material.AIR) ? "~" : String.valueOf(getCoordinate(targetBlock.getLocation())));
@@ -28,7 +28,7 @@ public abstract class CoordinateArgument implements CommandArgument {
 
 	@Override
 	public boolean matches(String arg, CommandSender sender) {
-		return arg.matches("(-?\\d+(\\.\\d+)?)|~");
+		return arg.matches("(~?-?\\d+(\\.\\d+)?)|~");
 	}
 
 	public static class XCoordinateArgument extends CoordinateArgument {

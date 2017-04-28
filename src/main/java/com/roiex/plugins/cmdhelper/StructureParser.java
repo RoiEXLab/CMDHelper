@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.bukkit.command.CommandSender;
 
 public class StructureParser {
+	
 	private static final String regexSyntaxCheck = "(((<([a-zA-Z]+)>)|((((?=[^\\|])[a-zA-Z])(\\|(?=[^\\s]))?)+))((\\s(?!$))|$|\\|))*(\\[([\\|\\<\\>a-zA-Z\\[\\]]|(\\s(?!\\])))*\\](\\s(?!$))?)*";
 
 	public static void validateStaticSyntax(String string) {
@@ -41,7 +42,7 @@ public class StructureParser {
 	private static List<CommandArgument> getCommandArguments(int index, String pattern, String[] args,
 			CommandSender sender) {
 		String nextArg = findNextArg(pattern);
-		String[] subArgs = nextArg.split("/\\|/");
+		String[] subArgs = nextArg.split("\\|");
 		List<CommandArgument> commandArgs = new ArrayList<>();
 		for (String subArg : subArgs) {
 			if (subArg.startsWith("<") && subArg.endsWith(">")) {
@@ -51,7 +52,7 @@ public class StructureParser {
 					if (index + 1 >= args.length) {
 						commandArgs.add(current);
 					} else if (current.matches(args[index], sender)) {
-						commandArgs.addAll(getCommandArguments(index + 1, pattern.substring(nextArg.length()), args, sender));
+						commandArgs.addAll(getCommandArguments(index + 1, pattern.substring(nextArg.length()).trim(), args, sender));
 					}
 				} else {
 					throw new IllegalArgumentException("Indentifier '" + identifier + "' doesn't exist!");
@@ -72,7 +73,7 @@ public class StructureParser {
 						}
 					});
 				} else if (args[index].equalsIgnoreCase(subArg)) {
-					commandArgs.addAll(getCommandArguments(index + 1, pattern.substring(nextArg.length()), args, sender));
+					commandArgs.addAll(getCommandArguments(index + 1, pattern.substring(nextArg.length() + 1), args, sender));
 				}
 
 			}
