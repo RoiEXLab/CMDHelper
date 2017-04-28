@@ -1,7 +1,6 @@
 package com.roiex.plugins.cmdhelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,15 +16,28 @@ public class CMDHelper extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		CommandArgument.registerDefaults();
-//		PluginCommand testCommand = getCommand("testCommand");
-//		testCommand.setExecutor(new CommandRouter().addRoute("<x> <y> <z> <block>", (s, c, a, args) -> {
-//			System.out.println("Setblock");
-//			return true;
-//		}).addRoute("<block> <material>", (s, c, a, args) -> {
-//			System.out.println("Other Stuff");
-//			return true;
-//		}));
-//		registerCommandSyntax(testCommand, "[<x> <y> <z> <block>]|[<block> <material>]|[<block> <x> <y>] [<x>]", new PermissionMask("<block> <material> <x>", "permission-coolness"));
+		//	CommandArgument.registerArgument("c", new CommandArgument(){
+		//		@Override
+		//		public List<String> getSuggestions(String arg, CommandSender sender) {
+		//			//Your Code here
+		//			return new ArrayList<>();
+		//		}
+		//
+		//		@Override
+		//		public boolean matches(String arg, CommandSender sender) {
+		//			//Your Code here
+		//			return false;
+		//		}
+		//	});
+		//	PluginCommand testCommand = getCommand("testCommand");
+		//	testCommand.setExecutor(new CommandRouter().addRoute("<x> <y> <z> <block>", (s, c, a, args) -> {
+		//		System.out.println("Setblock");
+		//		return true;
+		//	}).addRoute("<block> <material>", (s, c, a, args) -> {
+		//		System.out.println("Other Stuff");
+		//		return true;
+		//	}));
+		//	registerCommandSyntax(testCommand, "[<x> <y> <z> <block>]|[<block> <material>]|[<block> <x> <y>] [<x>]", new PermissionMask("<block> <material> <x>", "permission-coolness"));
 	}
 
 	public void registerCommandSyntax(PluginCommand command, String structure, PermissionMask... permissionMasks) {
@@ -44,7 +56,6 @@ public class CMDHelper extends JavaPlugin {
 					if (command.getPermission() != null && !sender.hasPermission(command.getPermission())) {
 						break tryLabel;
 					}
-					Arrays.stream(permissionMasks).filter(m -> StructureParser.matches(m.getMask(), args, sender));
 					List<CommandArgument> cmdArgs = StructureParser.getCommandArguments(pattern, args, sender);
 					for (PermissionMask mask : permissionMasks) {
 						if (!sender.hasPermission(mask.getPermission())) {
