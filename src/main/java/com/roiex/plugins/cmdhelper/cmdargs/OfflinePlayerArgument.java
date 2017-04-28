@@ -20,6 +20,6 @@ public class OfflinePlayerArgument implements CommandArgument {
 	@Override
 	public boolean matches(String arg, CommandSender sender) {
 		Preconditions.checkNotNull(arg);
-		return Arrays.stream(sender.getServer().getOfflinePlayers()).map(p -> p.getName().toLowerCase()).anyMatch(arg::equals);
+		return Arrays.stream(sender.getServer().getOfflinePlayers()).map(p -> p.getName().toLowerCase()).anyMatch(arg::equalsIgnoreCase);
 	}
 }

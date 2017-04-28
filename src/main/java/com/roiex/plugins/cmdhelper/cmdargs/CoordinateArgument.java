@@ -28,7 +28,7 @@ public abstract class CoordinateArgument implements CommandArgument {
 
 	@Override
 	public boolean matches(String arg, CommandSender sender) {
-		return arg.matches("-?\\d+(\\.\\d+)?");
+		return arg.matches("(-?\\d+(\\.\\d+)?)|~");
 	}
 
 	public static class XCoordinateArgument extends CoordinateArgument {

@@ -19,6 +19,6 @@ public class OnlinePlayerArgument implements CommandArgument {
 	@Override
 	public boolean matches(String arg, CommandSender sender) {
 		Preconditions.checkNotNull(arg);
-		return arg.startsWith("@") || sender.getServer().getOnlinePlayers().parallelStream().map(p -> p.getName().toLowerCase()).anyMatch(arg::equals);
+		return arg.startsWith("@") || sender.getServer().getOnlinePlayers().parallelStream().map(p -> p.getName().toLowerCase()).anyMatch(arg::equalsIgnoreCase);
 	}
 }

@@ -31,7 +31,7 @@ public abstract class BaseMaterialArgument implements CommandArgument {
 		if (startsWithPrefix) {
 			arg = trimArgument(arg);
 		}
-		return Arrays.stream(Material.values()).filter(getFilterCriteria()).anyMatch(arg::equals);
+		return Arrays.stream(Material.values()).filter(getFilterCriteria()).map(m -> m.toString()).anyMatch(arg::equalsIgnoreCase);
 	}
 
 	private String trimArgument(String arg) {

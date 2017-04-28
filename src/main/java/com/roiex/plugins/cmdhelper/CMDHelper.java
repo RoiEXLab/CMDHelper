@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -16,6 +17,16 @@ public class CMDHelper extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		CommandArgument.registerDefaults();
+		PluginCommand testCommand = getCommand("testCommand");
+		testCommand.setExecutor(new CommandExecutor(){
+
+			@Override
+			public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+				sender.sendMessage("Hi");
+				return true;
+			}});
+		registerCommandSyntax(testCommand, "/testCommand <x> <y> <z> <item> <material> <string>");
 	}
 
 	public void registerCommandSyntax(PluginCommand command, String structure, PermissionMask... permissionMasks) {
@@ -25,6 +36,7 @@ public class CMDHelper extends JavaPlugin {
 			structure = structure.substring(commandPrefix.length());
 		}
 		StructureParser.validateStaticSyntax(structure);
+		final String pattern = structure;
 		command.setTabCompleter(new TabCompleter() {
 			@Override
 			public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -34,15 +46,19 @@ public class CMDHelper extends JavaPlugin {
 						break tryLabel;
 					}
 					Arrays.stream(permissionMasks).filter(m -> StructureParser.matches(m, args));
-					CommandArgument.args.get(command.getName());
+					List<CommandArgument> cmdArgs = StructureParser.getCommandArguments(pattern, args, sender);
+					for (PermissionMask mask : permissionMasks) {
+						if (!sender.hasPermission(mask.getPermission())) {
+							List<CommandArgument> prohibitedArgs = StructureParser.getCommandArguments(mask.getMask(), args, sender);
+							prohibitedArgs.forEach(cmdArgs::remove);
+						}
+					}
+					cmdArgs.stream().map(a -> a.getSuggestions(args[args.length - 1], sender)).forEach(options::addAll);
 				} catch (IllegalArgumentException e) {
 					sender.sendMessage("§4Syntax Error detected while trying to Tab-Complete: Please report this to the plugin author!");
 				}
 				return new ArrayList<>(options);
 			}
 		});
-	}
-
-	public static void main(String[] args) {
 	}
 }
